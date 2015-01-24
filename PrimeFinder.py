@@ -16,5 +16,3 @@ class PrimeFinder:
                 break
             i += 1
         return retval
-
-
