@@ -6,19 +6,31 @@ from Log import Log
 
 class PrimeFileReader(PrimeFinder):
     """
-    Reads whitespace-separated primes from a text file, rather than computing them.  Note that `primesNotGreaterThan`
+    Reads 4-byte unsigned integer binary primes in native byte order from the file given at construction time.
+    This is as opposed to computing them, so it should go faster.  Note that `primesNotGreaterThan`
     may not return ALL primes not greater than the argument given to it.
+
+    *Obsolete docstring:*
+
+    Reads whitespace-separated primes from a text file.
     """
 
     def __init__(self, aFilePath):
-        self._primes = []
+        self._filePath = aFilePath
+
+    def primesNotGreaterThan(self, aMaximum):
+        retval = []
         # Binary file:
-        with open( aFilePath, "rb") as f:
+        with open( self._filePath, "rb") as f:
             b = f.read(4) # Four bytes
             while (b):
                 p = struct.unpack( "I", b)[0];
-                self._primes.append( p)
-                b = f.read(4)
+                if (p <= aMaximum):
+                    retval.append( p)
+                    b = f.read(4)
+                else:
+                    break
+
         # Text file:
         # with open( aFilePath) as f:
         #     for line in f:
@@ -26,13 +38,12 @@ class PrimeFileReader(PrimeFinder):
         #         for p in primes:
         #             self._primes.append(p)
 
-    def primesNotGreaterThan(self, aMaximum):
-        retval = []
-        for p in self._primes:
-            pint = int( p)
-            if (pint <= aMaximum):
-                retval.append( pint)
-            else:
-                break
+        # for p in self._primes:
+        #     pint = int( p)
+        #     if (pint <= aMaximum):
+        #         retval.append( pint)
+        #     else:
+        #         break
+
         return retval
 
