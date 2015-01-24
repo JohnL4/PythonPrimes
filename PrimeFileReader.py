@@ -8,7 +8,8 @@ class PrimeFileReader(PrimeFinder):
     """
     Reads 4-byte unsigned integer binary primes in native byte order from the file given at construction time.
     This is as opposed to computing them, so it should go faster.  Note that `primesNotGreaterThan`
-    may not return ALL primes not greater than the argument given to it.
+    may not return ALL primes not greater than the argument given to it, in the case that the file doesn't have
+    enough primes.
 
     *Obsolete docstring:*
 
